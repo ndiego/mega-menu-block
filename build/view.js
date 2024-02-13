@@ -1,0 +1,1 @@
+(()=>{"use strict";const e=window.wp.interactivity;(0,e.store)("mega-menu-block",{actions:{toggle:()=>{const t=(0,e.getContext)();t.isOpen=!t.isOpen}},effects:{logIsOpen:()=>{const{isOpen:t}=(0,e.getContext)();console.log(`Is open: ${t}`)}}})})();

@@ -1,16 +1,16 @@
 <?php
 /**
  * Plugin Name:       Mega Menu Block
- * Description:       An interactive block with the Interactivity API
- * Version:           0.1.0
- * Requires at least: 6.1
+ * Description:       An exploratory mega menu block
+ * Requires at least: 6.5
  * Requires PHP:      7.0
+ * Version:           0.1.0
  * Author:            Nick Diego
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       mega-menu-block
  *
- * @package           create-block
+ * @package           mega-menu-block
  */
 
 /**

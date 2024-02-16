@@ -1,11 +1,11 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "outermost/mega-menu-block",
+  "name": "outermost/mega-menu",
   "version": "0.1.0",
   "title": "Mega Menu",
   "category": "design",
-  "description": "Add a link that opens a mega menu to your navigation.",
+  "description": "Add a mega menu to your navigation.",
   "parent": [
     "core/navigation"
   ],
@@ -22,13 +22,19 @@
     },
     "menuSlug": {
       "type": "string"
+    },
+    "disableWhenCollapsed": {
+      "type": "boolean"
+    },
+    "collapsedUrl": {
+      "type": "string"
     }
   },
   "supports": {
-    "interactivity": true,
-    "reusable": false,
     "html": false,
-    "__experimentalSlashInserter": true,
+    "interactivity": true,
+    "renaming": false,
+    "reusable": false,
     "typography": {
       "fontSize": true,
       "lineHeight": true,
@@ -42,11 +48,12 @@
         "fontSize": true
       }
     },
-    "renaming": false
+    "__experimentalSlashInserter": true
   },
   "textdomain": "mega-menu-block",
   "editorScript": "file:./index.js",
   "style": "file:./style-index.css",
   "render": "file:./render.php",
-  "viewScript": "file:./view.js"
+  "viewScriptModule": "file:./view.js",
+  "viewStyle": "file:./index.css"
 }

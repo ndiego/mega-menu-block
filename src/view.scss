@@ -1,0 +1,71 @@
+.wp-block-outermost-mega-menu__menu-container {
+    left: -1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 30px;
+    transition: opacity .1s linear;
+    visibility: hidden;
+    z-index: 2;
+
+    .menu-container__close-button {
+        align-items: center;
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        backdrop-filter: blur(16px) saturate(180%);
+        background-color: #ffffffba;
+        border: none;
+        border-radius: 999999px;
+        display: flex;
+        justify-content: center;
+        opacity: 0;
+        padding: 6px;
+        position: absolute;
+        right: 12px;
+        text-align: center;
+        top: 12px;
+        transition: opacity .2s ease;
+        z-index: 100;
+
+        // Show the close button when focused (for keyboard navigation)
+        &:focus {
+            opacity: 1;
+        }
+    }
+
+    // Show the close button when the mega menu is hovered.
+    &:hover {
+        .menu-container__close-button {
+            opacity: 1;
+        }
+    }
+
+    // This ensures navigation menu inside of mega menus display correctly.
+    .is-responsive {
+        display: flex;
+    }
+}
+
+.wp-block-outermost-mega-menu__collapsed-link {
+    display: none;
+}
+
+// If a navigation modal is open, check if the mega menu should be displayed.
+html.has-modal-open {
+    .wp-block-outermost-mega-menu {
+        &.disable-menu-when-collapsed {
+            &:not(.has-collapsed-link) {
+                display: none;
+            }
+    
+            .wp-block-outermost-mega-menu__collapsed-link {
+                display: inherit;
+            }
+    
+            .wp-block-outermost-mega-menu__toggle, 
+            .wp-block-outermost-mega-menu__menu-container {
+                display: none;
+            }
+        }
+    }
+}
+

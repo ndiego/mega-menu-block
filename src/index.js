@@ -4,13 +4,11 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { addFilter } from '@wordpress/hooks';
 
-//import { link } from '@wordpress/icons';
-
-import './style.scss';
-
 /**
  * Internal dependencies
  */
+import './style.scss';
+import './view.scss';
 import Edit from './edit';
 import metadata from './block.json';
 
@@ -39,7 +37,7 @@ const addToNavigation = ( blockSettings, blockName ) => {
 			...blockSettings,
 			allowedBlocks: [
 				...( blockSettings.allowedBlocks ?? [] ),
-				'outermost/mega-menu-block',
+				'outermost/mega-menu',
 			],
 		};
 	}
@@ -47,6 +45,6 @@ const addToNavigation = ( blockSettings, blockName ) => {
 };
 addFilter(
 	'blocks.registerBlockType',
-	'outermost-mega-menu-block-add-to-navigation',
+	'outermost-mega-menu-add-to-navigation',
 	addToNavigation
 );

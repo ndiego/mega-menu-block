@@ -9,6 +9,7 @@ import {
 	SelectControl,
 	TextControl,
 	TextareaControl,
+	ToggleControl,
 } from '@wordpress/components';
 
 /**
@@ -24,9 +25,9 @@ import {
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const { label, menuSlug, title, description } = attributes;
+	const { label, menuSlug, title, description, disableWhenCollapsed, collapsedUrl } = attributes;
 	const blockProps = useBlockProps( { 
-		className: 'wp-block-navigation-item'
+		className: 'wp-block-navigation-item wp-block-outermost-mega-menu__toggle'
 	} );
 
 	// Fetch all template parts.
@@ -69,7 +70,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					<SelectControl
 						label={ __( 'Menu Template', 'mega-menu-block' ) }
 						value={ menuSlug }
-						options={ menuOptions }
+						options={ [ { label: '', value: '' }, ...menuOptions ] }
 						onChange={ ( value ) =>
 							setAttributes( { menuSlug: value } )
 						}
@@ -108,12 +109,37 @@ export default function Edit( { attributes, setAttributes } ) {
 						) }
 						autoComplete="off"
 					/>
+					<ToggleControl
+						label={ __( 'Disable when collapsed', 'mega-menu-block' ) }
+						checked={ disableWhenCollapsed }
+						onChange={ () => {
+							setAttributes( { disableWhenCollapsed: ! disableWhenCollapsed } );
+						} }
+						help={ __(
+							'Disable the mega menu when the navigation menu is collapsed.',
+							'mega-menu-block'
+						) }
+					/>
+					{ disableWhenCollapsed && (
+						<TextControl
+							label={ __( 'Url', 'mega-menu-block' ) }
+							type="text"
+							value={ collapsedUrl || '' }
+							onChange={ ( collapsedUrlValue ) => {
+								setAttributes( { collapsedUrl: collapsedUrlValue } );
+							} }
+							help={ __(
+								'When the navigtion menu is collapsed, link to this URL instead.',
+								'mega-menu-block'
+							) }
+							autoComplete="off"
+						/>
+					) }
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>
-				<a className='wp-block-navigation-item__content'>
+				<button className='wp-block-navigation-item__content wp-block-outermost-mega-menu__toggle'>
 					<RichText
-						//ref={ ref }
 						identifier="label"
 						className="wp-block-navigation-item__label"
 						value={ label }
@@ -133,12 +159,15 @@ export default function Edit( { attributes, setAttributes } ) {
 							'core/strikethrough',
 						] }
 					/>
+					<span class="wp-block-outermost-mega-menu__toggle-icon">
+						<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M1.50002 4L6.00002 8L10.5 4" stroke-width="1.5"></path></svg>
+					</span>
 					{ description && (
 						<span className="wp-block-navigation-item__description">
 							{ description }
 						</span>
 					) }
-				</a>
+				</button>
 			</div>
 		</>
 	);

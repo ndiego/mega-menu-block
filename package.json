@@ -14,7 +14,7 @@
 		"lint:js:src:fix": "wp-scripts lint-js ./src --fix",
 		"start": "wp-scripts start --experimental-modules",
 		"packages-update": "wp-scripts packages-update",
-		"update-pot": "wp i18n make-pot . languages/icon-block.pot --exclude=src"
+		"update-pot": "wp i18n make-pot . languages/mega-menu-block.pot --exclude=src"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^27.2.0"

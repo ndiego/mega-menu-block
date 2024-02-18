@@ -2,15 +2,27 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls, RichText, useBlockProps } from '@wordpress/block-editor';
-import { useEntityRecords } from '@wordpress/core-data';
 import {
+	InspectorControls,
+	RichText,
+	useBlockProps,
+} from '@wordpress/block-editor';
+import { useEntityRecords } from '@wordpress/core-data';
+import { useSelect } from '@wordpress/data';
+import { createInterpolateElement } from '@wordpress/element';
+import {
+	ComboboxControl,
 	PanelBody,
-	SelectControl,
+	Notice,
 	TextControl,
 	TextareaControl,
 	ToggleControl,
 } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import './edit.scss';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -25,10 +37,21 @@ import {
  * @return {Element} Element to render.
  */
 export default function Edit( { attributes, setAttributes } ) {
-	const { label, menuSlug, title, description, disableWhenCollapsed, collapsedUrl } = attributes;
-	const blockProps = useBlockProps( { 
-		className: 'wp-block-navigation-item wp-block-outermost-mega-menu__toggle'
-	} );
+	const {
+		label,
+		menuSlug,
+		title,
+		description,
+		disableWhenCollapsed,
+		collapsedUrl,
+	} = attributes;
+
+	// Get the Url for the template part screen in the Site Editor.
+	const siteUrl = useSelect( ( select ) => select( 'core' ).getSite().url );
+	const menuTemplateUrl = siteUrl
+		? siteUrl +
+		  '/wp-admin/site-editor.php?path=%2Fpatterns&categoryType=wp_template_part&categoryId=menu'
+		: '';
 
 	// Fetch all template parts.
 	const { hasResolved, records } = useEntityRecords(
@@ -51,10 +74,53 @@ export default function Edit( { attributes, setAttributes } ) {
 			} ) );
 	}
 
+	const hasMenus = menuOptions.length > 0;
+	const selectedMenuAndExists = menuSlug
+		? menuOptions.some( ( option ) => option.value === menuSlug )
+		: true;
+
+	// Notice for when no menus have been created.
+	const noMenusNotice = (
+		<Notice status="warning" isDismissible={ false }>
+			{ createInterpolateElement(
+				__(
+					'No menu templates could be found. Create a new one in the <a>Site Editor</a>.',
+					'mega-menu-block'
+				),
+				{
+					a: (
+						<a // eslint-disable-line
+							href={ menuTemplateUrl }
+							target="_blank"
+							rel="noreferrer"
+						/>
+					),
+				}
+			) }
+		</Notice>
+	);
+
+	// Notice for when the selected menu template no longer exists.
+	const menuDoesntExistNotice = (
+		<Notice status="warning" isDismissible={ false }>
+			{ __(
+				'The selected menu template no longer exists. Choose another.',
+				'mega-menu-block'
+			) }
+		</Notice>
+	);
+
+	// Modify block props.
+	const blockProps = useBlockProps( {
+		className:
+			'wp-block-navigation-item wp-block-outermost-mega-menu__toggle',
+	} );
+
 	return (
 		<>
 			<InspectorControls group="settings">
 				<PanelBody
+					className="outermost-mega-menu__settings-panel"
 					title={ __( 'Settings', 'mega-menu-block' ) }
 					initialOpen={ true }
 				>
@@ -67,23 +133,38 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 						autoComplete="off"
 					/>
-					<SelectControl
+					<ComboboxControl
 						label={ __( 'Menu Template', 'mega-menu-block' ) }
 						value={ menuSlug }
-						options={ [ { label: '', value: '' }, ...menuOptions ] }
+						options={ menuOptions }
 						onChange={ ( value ) =>
 							setAttributes( { menuSlug: value } )
 						}
+						help={
+							hasMenus &&
+							createInterpolateElement(
+								__(
+									'Create and modify menu templates in the <a>Site Editor</a>.',
+									'mega-menu-block'
+								),
+								{
+									a: (
+									<a // eslint-disable-line
+											href={ menuTemplateUrl }
+											target="_blank"
+											rel="noreferrer"
+										/>
+									),
+								}
+							)
+						}
 					/>
-					{ ! menuOptions && (
-						<div>
-							TODO: Add notice for when there are no menu
-							templates. This should link to template part creator
-							in Site Editor
-							Need to also detect if the chosen menu template still exists or not
-						</div>
-					) }
+					{ ! hasMenus && noMenusNotice }
+					{ hasMenus &&
+						! selectedMenuAndExists &&
+						menuDoesntExistNotice }
 					<TextareaControl
+						className="settings-panel__description"
 						label={ __( 'Description', 'mega-menu-block' ) }
 						type="text"
 						value={ description || '' }
@@ -110,13 +191,18 @@ export default function Edit( { attributes, setAttributes } ) {
 						autoComplete="off"
 					/>
 					<ToggleControl
-						label={ __( 'Disable when collapsed', 'mega-menu-block' ) }
+						label={ __(
+							'Disable in navigation overlay',
+							'mega-menu-block'
+						) }
 						checked={ disableWhenCollapsed }
 						onChange={ () => {
-							setAttributes( { disableWhenCollapsed: ! disableWhenCollapsed } );
+							setAttributes( {
+								disableWhenCollapsed: ! disableWhenCollapsed,
+							} );
 						} }
 						help={ __(
-							'Disable the mega menu when the navigation menu is collapsed.',
+							'When the navigation options are displayed in an overlay, typically on mobile devices, disable the mega menu.',
 							'mega-menu-block'
 						) }
 					/>
@@ -126,7 +212,9 @@ export default function Edit( { attributes, setAttributes } ) {
 							type="text"
 							value={ collapsedUrl || '' }
 							onChange={ ( collapsedUrlValue ) => {
-								setAttributes( { collapsedUrl: collapsedUrlValue } );
+								setAttributes( {
+									collapsedUrl: collapsedUrlValue,
+								} );
 							} }
 							help={ __(
 								'When the navigtion menu is collapsed, link to this URL instead.',
@@ -138,7 +226,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>
-				<button className='wp-block-navigation-item__content wp-block-outermost-mega-menu__toggle'>
+				<button className="wp-block-navigation-item__content wp-block-outermost-mega-menu__toggle">
 					<RichText
 						identifier="label"
 						className="wp-block-navigation-item__label"
@@ -149,7 +237,8 @@ export default function Edit( { attributes, setAttributes } ) {
 							} )
 						}
 						aria-label={ __(
-							'Mega menu link text'
+							'Mega menu link text',
+							'mega-menu-block'
 						) }
 						placeholder={ __( 'Add label…', 'mega-menu-block' ) }
 						allowedFormats={ [
@@ -159,8 +248,21 @@ export default function Edit( { attributes, setAttributes } ) {
 							'core/strikethrough',
 						] }
 					/>
-					<span class="wp-block-outermost-mega-menu__toggle-icon">
-						<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M1.50002 4L6.00002 8L10.5 4" stroke-width="1.5"></path></svg>
+					<span className="wp-block-outermost-mega-menu__toggle-icon">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="12"
+							height="12"
+							viewBox="0 0 12 12"
+							fill="none"
+							aria-hidden="true"
+							focusable="false"
+						>
+							<path
+								d="M1.50002 4L6.00002 8L10.5 4"
+								strokeWidth="1.5"
+							></path>
+						</svg>
 					</span>
 					{ description && (
 						<span className="wp-block-navigation-item__description">

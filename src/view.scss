@@ -1,5 +1,8 @@
+// Front-end specific styles.
 .wp-block-outermost-mega-menu__menu-container {
+    height: auto;
     left: -1px;
+    max-width: var(--wp--style--global--content-size);
     opacity: 0;
     overflow: hidden;
     position: absolute;
@@ -7,6 +10,7 @@
     transition: opacity .1s linear;
     visibility: hidden;
     z-index: 2;
+    width: var(--wp--style--global--content-size);
 
     .menu-container__close-button {
         align-items: center;
@@ -15,10 +19,11 @@
         background-color: #ffffffba;
         border: none;
         border-radius: 999999px;
+        cursor: pointer;
         display: flex;
         justify-content: center;
         opacity: 0;
-        padding: 6px;
+        padding: 4px;
         position: absolute;
         right: 12px;
         text-align: center;
@@ -49,6 +54,23 @@
     display: none;
 }
 
+// Change the position of the menu depending on navigation alignment
+.wp-block-navigation {
+    &.is-content-justification-right {
+        .wp-block-outermost-mega-menu__menu-container {
+          left: unset;
+          right: -1px;
+        }
+    }
+
+    &.items-justified-center,
+    &.items-justified-space-between {
+        .wp-block-outermost-mega-menu__menu-container {
+            left: calc( ( -1 * var(--wp--style--global--content-size) / 2 ) + 50% ); // Center the mega menu in the navigation menu container.
+        }
+     }
+}
+
 // If a navigation modal is open, check if the mega menu should be displayed.
 html.has-modal-open {
     .wp-block-outermost-mega-menu {
@@ -68,4 +90,3 @@ html.has-modal-open {
         }
     }
 }
-

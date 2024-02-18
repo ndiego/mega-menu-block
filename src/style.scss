@@ -1,6 +1,6 @@
+// Styles for both the Editor and the front end.
 .wp-block-outermost-mega-menu {
-
-    button {
+    .wp-block-outermost-mega-menu__toggle {
         background-color: initial;
         border: none;
         color: currentColor;
@@ -10,12 +10,9 @@
         font-style: inherit;
         font-weight: inherit;
         line-height: inherit;
+        padding: 0;
         text-align: left;
         text-transform: inherit;
-    }
-
-    .wp-block-outermost-mega-menu__toggle {
-        padding: 0;
 
         .wp-block-outermost-mega-menu__toggle-icon {
             align-self: center;
@@ -46,13 +43,10 @@
             }
 
             &~.wp-block-outermost-mega-menu__menu-container {
-                height: auto;
-                max-width: var(--wp--style--global--content-size);
                 opacity: 1;
                 overflow: visible;
                 visibility: visible;
-                width: 100%;
             }
         }
-    }
+    }  
 }

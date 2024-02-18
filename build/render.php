@@ -10,10 +10,6 @@
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
-// Enqueue the view files.
-//wp_enqueue_script_module( 'outermost_mega_menu_block__scripts' );
-//wp_enqueue_style( 'outermost_mega_menu_block__styles' );
-
 $disable_when_collapsed = $attributes['disableWhenCollapsed'] ?? false;
 $label                  = esc_html( $attributes['label'] ?? '' );
 $menu_slug              = esc_attr( $attributes['menuSlug'] ?? '');

@@ -140,24 +140,21 @@ export default function Edit( { attributes, setAttributes } ) {
 						onChange={ ( value ) =>
 							setAttributes( { menuSlug: value } )
 						}
-						help={
-							hasMenus &&
-							createInterpolateElement(
-								__(
-									'Create and modify menu templates in the <a>Site Editor</a>.',
-									'mega-menu-block'
-								),
-								{
-									a: (
+						help={ hasMenus && createInterpolateElement(
+							__(
+								'Create and modify menu templates in the <a>Site Editor</a>.',
+								'mega-menu-block'
+							),
+							{
+								a: (
 									<a // eslint-disable-line
-											href={ menuTemplateUrl }
-											target="_blank"
-											rel="noreferrer"
-										/>
-									),
-								}
-							)
-						}
+										href={ menuTemplateUrl }
+										target="_blank"
+										rel="noreferrer"
+									/>
+								),
+							}
+						) }
 					/>
 					{ ! hasMenus && noMenusNotice }
 					{ hasMenus &&

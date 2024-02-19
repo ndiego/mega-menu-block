@@ -22,7 +22,7 @@
             "step": "installPlugin",
 			"pluginZipFile": {
 				"resource": "url",
-				"slug": "https://github.com/ndiego/mega-menu-block/archive/refs/heads/main.zip"
+				"url": "https://github.com/ndiego/mega-menu-block/archive/refs/heads/main.zip"
 			},
 			"options": {
 				"activate": true

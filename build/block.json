@@ -28,6 +28,12 @@
     },
     "collapsedUrl": {
       "type": "string"
+    },
+    "justifyMenu": {
+      "type": "string"
+    },
+    "width": {
+      "type": "string"
     }
   },
   "supports": {

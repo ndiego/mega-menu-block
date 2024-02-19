@@ -181,6 +181,7 @@ function adjustMegaMenus() {
 
 					// Make sure the menu does not extend off the left-side of the screen.
 					if ( menuRect.left <= 0 ) {
+						// TODO: This is not correct when justified right in some scenarios.
 						menu.style.left = `${ leftOffset }px`;
 					} else {
 						menu.style.left = '';

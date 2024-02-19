@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	InspectorControls,
 	RichText,
@@ -17,7 +17,18 @@ import {
 	TextControl,
 	TextareaControl,
 	ToggleControl,
+	__experimentalHStack as HStack, // eslint-disable-line
+	__experimentalToggleGroupControl as ToggleGroupControl, // eslint-disable-line
+	__experimentalToggleGroupControlOptionIcon as ToggleGroupControlOptionIcon, // eslint-disable-line
 } from '@wordpress/components';
+import {
+	alignNone,
+	justifyLeft,
+	justifyCenter,
+	justifyRight,
+	stretchWide,
+	stretchFullWidth,
+} from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -44,6 +55,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		description,
 		disableWhenCollapsed,
 		collapsedUrl,
+		justifyMenu,
+		width,
 	} = attributes;
 
 	// Get the Url for the template part screen in the Site Editor.
@@ -52,6 +65,13 @@ export default function Edit( { attributes, setAttributes } ) {
 		? siteUrl +
 		  '/wp-admin/site-editor.php?path=%2Fpatterns&categoryType=wp_template_part&categoryId=menu'
 		: '';
+
+	// Get the layout settings.
+	const layout = useSelect(
+		( select ) =>
+			select( 'core/editor' ).getEditorSettings()?.__experimentalFeatures
+				?.layout
+	);
 
 	// Fetch all template parts.
 	const { hasResolved, records } = useEntityRecords(
@@ -116,6 +136,50 @@ export default function Edit( { attributes, setAttributes } ) {
 			'wp-block-navigation-item wp-block-outermost-mega-menu__toggle',
 	} );
 
+	const justificationOptions = [
+		{
+			value: 'left',
+			icon: justifyLeft,
+			label: __( 'Justify menu left', 'mega-menu-block' ),
+		},
+		{
+			value: 'center',
+			icon: justifyCenter,
+			label: __( 'Justify menu center', 'mega-menu-block' ),
+		},
+		{
+			value: 'right',
+			icon: justifyRight,
+			label: __( 'Justify menu right', 'mega-menu-block' ),
+		},
+	];
+
+	const widthOptions = [
+		{
+			value: 'content',
+			icon: alignNone,
+			label: sprintf(
+				// translators: %s: container size (i.e. 600px etc)
+				__( 'Content width (%s wide)', 'mega-menu-block' ),
+				layout.contentSize
+			),
+		},
+		{
+			value: 'wide',
+			icon: stretchWide,
+			label: sprintf(
+				// translators: %s: container size (i.e. 600px etc)
+				__( 'Wide width (%s wide)', 'mega-menu-block' ),
+				layout.wideSize
+			),
+		},
+		{
+			value: 'full',
+			icon: stretchFullWidth,
+			label: __( 'Full width', 'mega-menu-block' ),
+		},
+	];
+
 	return (
 		<>
 			<InspectorControls group="settings">
@@ -140,21 +204,24 @@ export default function Edit( { attributes, setAttributes } ) {
 						onChange={ ( value ) =>
 							setAttributes( { menuSlug: value } )
 						}
-						help={ hasMenus && createInterpolateElement(
-							__(
-								'Create and modify menu templates in the <a>Site Editor</a>.',
-								'mega-menu-block'
-							),
-							{
-								a: (
-									<a // eslint-disable-line
-										href={ menuTemplateUrl }
-										target="_blank"
-										rel="noreferrer"
-									/>
+						help={
+							hasMenus &&
+							createInterpolateElement(
+								__(
+									'Create and modify menu templates in the <a>Site Editor</a>.',
+									'mega-menu-block'
 								),
-							}
-						) }
+								{
+									a: (
+									<a // eslint-disable-line
+											href={ menuTemplateUrl }
+											target="_blank"
+											rel="noreferrer"
+										/>
+									),
+								}
+							)
+						}
 					/>
 					{ ! hasMenus && noMenusNotice }
 					{ hasMenus &&
@@ -220,6 +287,62 @@ export default function Edit( { attributes, setAttributes } ) {
 							autoComplete="off"
 						/>
 					) }
+				</PanelBody>
+				<PanelBody
+					className="outermost-mega-menu__layout-panel"
+					title={ __( 'Layout', 'mega-menu-block' ) }
+					initialOpen={ true }
+				>
+					<HStack alignment="top" justify="space-between">
+						<ToggleGroupControl
+							className="block-editor-hooks__flex-layout-justification-controls"
+							label={ __( 'Justification', 'mega-menu-block' ) }
+							value={ justifyMenu }
+							onChange={ ( justificationValue ) => {
+								setAttributes( {
+									justifyMenu: justificationValue,
+								} );
+							} }
+							isDeselectable={ true }
+						>
+							{ justificationOptions.map(
+								( { value, icon, iconLabel } ) => {
+									return (
+										<ToggleGroupControlOptionIcon
+											key={ value }
+											value={ value }
+											icon={ icon }
+											label={ iconLabel }
+										/>
+									);
+								}
+							) }
+						</ToggleGroupControl>
+						<ToggleGroupControl
+							className="block-editor-hooks__flex-layout-justification-controls"
+							label={ __( 'Width', 'mega-menu-block' ) }
+							value={ width || 'content' }
+							onChange={ ( widthValue ) => {
+								setAttributes( {
+									width: widthValue,
+								} );
+							} }
+							__nextHasNoMarginBottom
+						>
+							{ widthOptions.map(
+								( { value, icon, iconLabel } ) => {
+									return (
+										<ToggleGroupControlOptionIcon
+											key={ value }
+											value={ value }
+											icon={ icon }
+											label={ iconLabel }
+										/>
+									);
+								}
+							) }
+						</ToggleGroupControl>
+					</HStack>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>

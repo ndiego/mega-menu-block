@@ -13,3 +13,16 @@
         margin-right: 0;
     }
 }
+
+.outermost-mega-menu__layout-panel {
+    .components-h-stack {
+        &> .components-base-control  {
+            margin-bottom: 0;
+        }
+    }
+}
+// .wp-block-outermost-mega-menu {
+//     .wp-block-outermost-mega-menu__toggle {
+//         cursor: text;
+//     }
+// }

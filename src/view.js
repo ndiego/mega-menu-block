@@ -135,6 +135,22 @@ function adjustMegaMenus() {
 				justification = 'right';
 			}
 
+			// TODO: Refactor
+			if (
+				menu.classList.contains( 'menu-justified-center' )
+			) {
+				justification = 'center';
+			} else if (
+				menu.classList.contains( 'menu-justified-right' )
+			) {
+				justification = 'right';
+			} else if (
+				menu.classList.contains( 'menu-justified-left' )
+			) {
+				justification = 'right';
+			}
+
+			console.log( justification );
 			// Get the window space and the native width of the mega menu.
 			const windowSpace =
 				window.innerWidth -
@@ -156,14 +172,14 @@ function adjustMegaMenus() {
 			if ( justification === 'center' ) {
 				if ( menuWidth > windowSpace ) {
 					menu.style.width = `${ windowSpace }px`;
-					menu.style.left = `${ leftOffset }px`;
+					menu.style.left = `-${ leftOffset }px`;
 				} else if ( menuRect.left > 0 && leftSpace >= menuRect.left ) {
 					// Do nothing, the menu is positioned with CSS and it looks fine.
 					menu.style.left = '';
 				} else if ( leftOffset >= leftSpace ) {
 					// Reset width.
 					menu.style.width = '';
-					menu.style.left = `${ leftOffset - leftSpace }px`;
+					menu.style.left = `-${ leftOffset - leftSpace }px`;
 				} else {
 					menu.style.width = '';
 					menu.style.left = `${ leftSpace - leftOffset }px`;

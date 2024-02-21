@@ -22,7 +22,7 @@
             "step": "installPlugin",
 			"pluginZipFile": {
 				"resource": "url",
-				"url": "https://github.com/ndiego/mega-menu-block/releases/download/v0.1.0/mega-menu-block.zip"
+				"url": "https://raw.githubusercontent.com/ndiego/mega-menu-block/main/_playground/mega-menu-block.zip"
 			},
 			"options": {
 				"activate": true

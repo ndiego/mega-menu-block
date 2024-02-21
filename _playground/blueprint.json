@@ -1,9 +1,9 @@
 {
 	"landingPage": "/wp-admin/site-editor.php",
-    "preferredVersions": {
-        "php": "8.0",
-        "wp": "6.5-beta1"
-    },
+	"preferredVersions": {
+		"php": "8.0",
+		"wp": "beta"
+	},
 	"features": {
 		"networking": true
 	},
@@ -18,8 +18,8 @@
 				"activate": true
 			}
 		},
-        {
-            "step": "installPlugin",
+		{
+			"step": "installPlugin",
 			"pluginZipFile": {
 				"resource": "url",
 				"url": "https://raw.githubusercontent.com/ndiego/mega-menu-block/main/_playground/mega-menu-block.zip"
@@ -27,7 +27,7 @@
 			"options": {
 				"activate": true
 			}
-        },
+		},
 		{
 			"step": "login",
 			"username": "admin",

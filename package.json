@@ -15,10 +15,11 @@
 		"start": "wp-scripts start --experimental-modules",
 		"packages-update": "wp-scripts packages-update",
 		"update-pot": "wp i18n make-pot . languages/mega-menu-block.pot --exclude=src",
-		"plugin-zip": "wp-scripts plugin-zip"
+		"plugin-zip": "npm run plugin-zip && copyfiles --verbose mega-menu-block.zip _playground/ && rm mega-menu-block.zip"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^27.2.0"
+		"@wordpress/scripts": "^27.2.0",
+		"copyfiles": "^2.4.1"
 	},
 	"dependencies": {
 		"@wordpress/icons": "^9.42.0"

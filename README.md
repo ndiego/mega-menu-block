@@ -1,6 +1,6 @@
 # Mega Menu Block
 
-This plugin registers an experimental Mega Menu block.
+This plugin registers an **experimental** Mega Menu block.
 
 You can [test the block in your browser](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/ndiego/mega-menu-block/main/_playground/blueprint.json) using Playground. Try adding the Menu Menu block to a Navigation block and configure a menu template in the Settings Sidebar.
 

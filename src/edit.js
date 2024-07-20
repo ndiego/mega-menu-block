@@ -60,7 +60,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	} = attributes;
 
 	// Get the Url for the template part screen in the Site Editor.
-	const siteUrl = useSelect( ( select ) => select( 'core' ).getSite().url );
+	const siteUrl = useSelect( ( select ) => select( 'core' ).getSite()?.url );
 	const menuTemplateUrl = siteUrl
 		? siteUrl +
 		  '/wp-admin/site-editor.php?path=%2Fpatterns&categoryType=wp_template_part&categoryId=menu'

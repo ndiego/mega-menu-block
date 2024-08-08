@@ -150,7 +150,6 @@ function adjustMegaMenus() {
 				justification = 'right';
 			}
 
-			console.log( justification );
 			// Get the window space and the native width of the mega menu.
 			const windowSpace =
 				window.innerWidth -

@@ -63,7 +63,7 @@ export default function Edit( { attributes, setAttributes } ) {
 	const siteUrl = useSelect( ( select ) => select( 'core' ).getSite()?.url );
 	const menuTemplateUrl = siteUrl
 		? siteUrl +
-		  '/wp-admin/site-editor.php?path=%2Fpatterns&categoryType=wp_template_part&categoryId=menu'
+		  '/wp-admin/site-editor.php?postType=wp_template_part&categoryId=menu'
 		: '';
 
 	// Get the layout settings.
